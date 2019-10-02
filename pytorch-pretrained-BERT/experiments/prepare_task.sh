@@ -23,11 +23,11 @@ model_dir=models/$prefix
 mkdir -p $model_dir
 
 function run_train () {
-    python pytorch-pretrained-BERT/run_classifier.py $TRAIN_OPTIONS \
+    python examples/run_classifier.py $TRAIN_OPTIONS \
     --task_name $TASK \
     --do_train \
     --do_lower_case \
-    --data_dir /data/glue/$TASK/ \
+    --data_dir glue_data/$TASK/ \
     --bert_model bert-base-uncased \
     --max_seq_length 128 \
     --train_batch_size 32 \
@@ -38,12 +38,12 @@ function run_train () {
 }
 
 function run_eval () {
-    python pytorch-pretrained-BERT/run_classifier.py \
+    python examples/run_classifier.py \
     --task_name $TASK \
     --do_eval \
     --do_lower_case \
     $1 \
-    --data_dir /data/glue/$TASK/ \
+    --data_dir glue_data/$TASK/ \
     --bert_model bert-base-uncased \
     --max_seq_length 128 \
     --eval_batch_size 32 \
