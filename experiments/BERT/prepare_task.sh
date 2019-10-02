@@ -27,11 +27,11 @@ function run_train () {
     --task_name $TASK \
     --do_train \
     --do_lower_case \
-    --data_dir /data/glue/$TASK/ \
+    --data_dir $DATA_DIR/glue/$TASK/ \
     --bert_model bert-base-uncased \
     --max_seq_length 128 \
-    --train_batch_size 32 \
-    --eval_batch_size 32 \
+    --train_batch_size 8 \
+    --eval_batch_size 8 \
     --learning_rate 2e-5 \
     --num_train_epochs 3.0 \
     --output_dir $model_dir 2>&1
@@ -43,16 +43,18 @@ function run_eval () {
     --do_eval \
     --do_lower_case \
     $1 \
-    --data_dir /data/glue/$TASK/ \
+    --data_dir $DATA_DIR/glue/$TASK/ \
     --bert_model bert-base-uncased \
     --max_seq_length 128 \
-    --eval_batch_size 32 \
+    --eval_batch_size 8 \
     --output_dir $model_dir 2>&1
 }
 
 if [ ! -e $model_dir/pytorch_model.bin ]
 then
     run_train
+else
+    echo "trained model exist"
 fi
 
 metric="eval_accuracy"
