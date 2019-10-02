@@ -1,5 +1,6 @@
 models
 bert_output
+head_distributions
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

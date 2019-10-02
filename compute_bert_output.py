@@ -21,6 +21,14 @@ def main():
     parser.add_argument('--layers', type=int, nargs='+', default=list(range(12)))
     args = parser.parse_args()
 
+    # prepare output dir
+
+    output_dir = os.path.join(args.output_folder_name, args.task)
+    if not os.path.exists(args.output_folder_name):
+        os.makedirs(output_dir)
+
+    # prepare model
+
     if args.finetuned_model is None:
         model = BertModel.from_pretrained(args.bert_model)
     else:
@@ -56,10 +64,6 @@ def main():
     tokenizer = BertTokenizer.from_pretrained(args.bert_model)
 
     # processing input data
-
-    output_dir = os.path.join(args.output_folder_name, args.task)
-    if not os.path.exists(args.output_folder_name):
-        os.makedirs(output_dir)
 
     token_file = open(os.path.join(output_dir, 'tokens.tsv'), 'wt')
     tsv_writer = csv.writer(token_file, delimiter='\t')

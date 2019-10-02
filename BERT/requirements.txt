@@ -6,3 +6,8 @@ tqdm
 boto3
 # Used for downloading models over HTTP
 requests
+xlwt
+pandas
+MulticoreTSNE
+nltk
+matplotlib
