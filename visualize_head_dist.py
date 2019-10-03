@@ -15,7 +15,7 @@ from tqdm import tqdm
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--task', '-t', required=True)
-    parser.add_argument('--method', type=str, default='pca', choices=['tsne', 'pca', 'lda'])
+    parser.add_argument('--method', '-m', type=str, default='pca', choices=['tsne', 'pca', 'lda'])
     parser.add_argument('--num_layers', type=int, default=12)
     parser.add_argument('--reduction', type=float, default=1.0)
     parser.add_argument('--input_folder_name', '-i', type=str, default="bert_output")
@@ -85,14 +85,14 @@ def main():
             row += 1
 
         data = np.concatenate(data)
+        labels = np.repeat(labels, label_size)
 
         if args.method == 'pca':
             data = PCA(n_components=2).fit_transform(data)
         elif args.method == 'tsne':
             data = TSNE(n_jobs=24, verbose=True).fit_transform(data)
-        # elif args.method == 'lda':
-        #     pseudo_labels = list(map(repr, colors))
-        #     data = LDA(n_components=2).fit_transform(data, pseudo_labels)
+        elif args.method == 'lda':
+            data = LDA(n_components=2).fit_transform(data, labels)
 
         # plot distribution
 
@@ -102,8 +102,6 @@ def main():
         box = ax.get_position()
         ax.set_position([box.x0, box.y0 + box.height * 0.2,
                          box.width, box.height * 0.85])
-
-        labels = np.repeat(labels, label_size)
 
         color_dict = {
             0 :'r',

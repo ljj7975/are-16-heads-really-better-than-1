@@ -1,6 +1,4 @@
 from math import sqrt
-from logger import logger
-
 
 def parse_head_pruning_descriptors(
     descriptors,
@@ -51,7 +49,7 @@ def determine_pruning_sequence(
             # Make sure we keep at least one head per layer
             if at_least_x_heads_per_layer > 0:
                 if n_to_prune > total_heads - at_least_x_heads_per_layer * n_layers:
-                    logger.warn(
+                    print(
                         f"Can't prune {prune_percent}% ({n_to_prune})"
                         f" heads AND keep at least {at_least_x_heads_per_layer}"
                         " head(s) per layer. Will"

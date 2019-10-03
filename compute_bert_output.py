@@ -7,6 +7,7 @@ import pandas as pd
 from tqdm import tqdm
 
 from BERT.pytorch_pretrained_bert import BertModel, BertForSequenceClassification, BertTokenizer
+from BERT import pruning
 from utils import chunk, SingleInputBundle, hook_bert_layer_attn, BundleAveragingHook
 
 
@@ -19,6 +20,18 @@ def main():
     parser.add_argument('--batch-size', '-b', type=int, default=16)
     parser.add_argument('--finetuned_model', '-f', type=str)
     parser.add_argument('--layers', type=int, nargs='+', default=list(range(12)))
+    parser.add_argument(
+        "--attention_mask_heads", default="", type=str, nargs="*",
+        help="[layer]:[head1],[head2]..."
+    )
+    parser.add_argument(
+        '--reverse_head_mask', action='store_true',
+        help="Mask all heads except those specified by `--attention-mask-heads`"
+    )
+    parser.add_argument(
+        "--actually_prune", action='store_true',
+        help="Really prune (like, for real)"
+    )
     args = parser.parse_args()
 
     # prepare output dir
@@ -40,11 +53,26 @@ def main():
     model.cuda()
     model.eval()
 
+    # TODO:: must be dynamic to pruning
     num_attention_heads=model.encoder.layer[0].attention.self.n_heads
 
     print(f'TASK - {args.task}')
     print(f'layers - {args.layers}')
     print(f'num heads - {num_attention_heads}')
+
+    # Parse pruning descriptor
+    to_prune = pruning.parse_head_pruning_descriptors(
+        args.attention_mask_heads,
+        reverse_descriptors=args.reverse_head_mask,
+    )
+
+    print(f'masked heads - {args.attention_mask_heads}')
+
+    # Mask heads
+    if args.actually_prune:
+        model.prune_heads(to_prune)
+    else:
+        model.mask_heads(to_prune)
 
     # hooks
     hooks = []

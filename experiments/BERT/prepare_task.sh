@@ -23,7 +23,7 @@ model_dir=models/$prefix
 mkdir -p $model_dir
 
 function run_train () {
-    python pytorch-pretrained-BERT/run_classifier.py $TRAIN_OPTIONS \
+    python BERT/run_classifier.py $TRAIN_OPTIONS \
     --task_name $TASK \
     --do_train \
     --do_lower_case \
@@ -38,7 +38,7 @@ function run_train () {
 }
 
 function run_eval () {
-    python pytorch-pretrained-BERT/run_classifier.py \
+    python BERT/run_classifier.py \
     --task_name $TASK \
     --do_eval \
     --do_lower_case \
@@ -58,13 +58,15 @@ else
 fi
 
 metric="eval_accuracy"
-if [ $TASK == "CoLA" ]
-then
-    metric="Matthew"
-elif [ $TASK == "MRPC" ]
+if [ $TASK == "MRPC" ]
 then
     metric="F-1"
+# elif [ $TASK == "CoLA" ]
+# then
+#     metric="Matthew"
 fi
+
+run_eval
 
 if [ "$EVAL" = "1" ]
 then
