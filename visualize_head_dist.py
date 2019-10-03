@@ -9,6 +9,7 @@ from sklearn.discriminant_analysis import LinearDiscriminantAnalysis as LDA
 from MulticoreTSNE import MulticoreTSNE as TSNE
 from matplotlib import pyplot as plt
 from xlwt import Workbook 
+from tqdm import tqdm
 
 
 def main():
@@ -35,7 +36,7 @@ def main():
 
     # one layer at a time
     
-    for layer in range(args.num_layers):
+    for layer in tqdm(range(args.num_layers)):
         sheet = wb.add_sheet(f'Layer {layer}')
 
         sheet.write(0, 1, 'head_ind')
@@ -50,29 +51,36 @@ def main():
         data = []
         labels = np.arange(0, num_heads)
 
+        label_size = []
+
         row = 1
         for head_ind in labels:
-            head_file = os.path.join(input_dir, f'att-l{layer}-{head_ind}.pt')
+            head_file = os.path.join(input_dir, f'attn-l{layer}-{head_ind}.pt')
             head_data = torch.load(head_file).numpy()
 
+            num_entry = head_data.shape[0]
+
             if args.reduction < 1:
-                total = head_data.shape[0]
-                random_idx = np.random.randint(total, size=round(total*args.reduction))
+                num_selected = round(num_entry*args.reduction)
+                random_idx = np.random.randint(num_entry, size=num_selected)
                 head_data = head_data[random_idx, :]
+                label_size.append(num_selected)
+            else:
+                label_size.append(num_entry)
 
             data.append(head_data)
 
             pca = PCA(n_components=2)
             pca.fit(head_data)
 
-            sheet.write(row, 1, head_ind)
-            sheet.write(row, 2, pca.explained_variance_[0])
-            sheet.write(row, 3, pca.explained_variance_[1])
-            sheet.write(row, 4, pca.explained_variance_ratio_[0])
-            sheet.write(row, 5, pca.explained_variance_ratio_[1])
-            sheet.write(row, 6, pca.singular_values_[0])
-            sheet.write(row, 7, pca.singular_values_[1])
-            sheet.write(row, 8, pca.noise_variance_)
+            sheet.write(row, 1, int(head_ind))
+            sheet.write(row, 2, float(pca.explained_variance_[0]))
+            sheet.write(row, 3, float(pca.explained_variance_[1]))
+            sheet.write(row, 4, float(pca.explained_variance_ratio_[0]))
+            sheet.write(row, 5, float(pca.explained_variance_ratio_[1]))
+            sheet.write(row, 6, float(pca.singular_values_[0]))
+            sheet.write(row, 7, float(pca.singular_values_[1]))
+            sheet.write(row, 8, float(pca.noise_variance_))
 
             row += 1
 
@@ -95,7 +103,7 @@ def main():
         ax.set_position([box.x0, box.y0 + box.height * 0.2,
                          box.width, box.height * 0.85])
 
-        labels = np.repeat(labels, args.num_groups)
+        labels = np.repeat(labels, label_size)
 
         color_dict = {
             0 :'r',
