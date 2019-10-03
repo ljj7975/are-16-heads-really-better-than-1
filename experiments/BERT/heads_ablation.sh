@@ -2,7 +2,7 @@
 
 TASK=$1
 OPTIONS="${@:2}"
-LOG_FILE="bert_output/${TASK}/ablation_results.txt"
+LOG_FILE="models/${TASK}/ablation_results.txt"
 echo "log file : $LOG_FILE"
 echo "task : $TASK"
 echo "options : $OPTIONS"

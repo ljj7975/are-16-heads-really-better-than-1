@@ -122,7 +122,9 @@ def main():
             ix = np.where(labels == head_label)
             scatter = ax.scatter(data[:,0][ix], data[:,1][ix], c=color_dict[head_label], label=head_label, s=1)
 
-        ax.legend(loc='upper center', bbox_to_anchor=(0.5, -0.15), title="Heads", ncol=num_heads, prop={'size': 6})
+        lgd = ax.legend(loc='upper center', bbox_to_anchor=(0.5, -0.10), title="Heads", ncol=int(num_heads/2), prop={'size': 10})
+        for handle in lgd.legendHandles:
+            handle.set_sizes([100.0])
 
         ax.set_title(f'Heads distribution for layer {layer}')
 
