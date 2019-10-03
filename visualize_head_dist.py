@@ -53,7 +53,6 @@ def main():
 
         label_size = []
 
-        row = 1
         for head_ind in labels:
             head_file = os.path.join(input_dir, f'attn-l{layer}-{head_ind}.pt')
             head_data = torch.load(head_file).numpy()
@@ -71,18 +70,16 @@ def main():
             data.append(head_data)
 
             pca = PCA(n_components=2)
-            pca.fit(head_data)
+            pca.fit_transform(head_data)
 
-            sheet.write(row, 1, int(head_ind))
-            sheet.write(row, 2, float(pca.explained_variance_[0]))
-            sheet.write(row, 3, float(pca.explained_variance_[1]))
-            sheet.write(row, 4, float(pca.explained_variance_ratio_[0]))
-            sheet.write(row, 5, float(pca.explained_variance_ratio_[1]))
-            sheet.write(row, 6, float(pca.singular_values_[0]))
-            sheet.write(row, 7, float(pca.singular_values_[1]))
-            sheet.write(row, 8, float(pca.noise_variance_))
-
-            row += 1
+            sheet.write(int(head_ind+1), 1, int(head_ind))
+            sheet.write(int(head_ind+1), 2, float(pca.explained_variance_[0]))
+            sheet.write(int(head_ind+1), 3, float(pca.explained_variance_[1]))
+            sheet.write(int(head_ind+1), 4, float(pca.explained_variance_ratio_[0]))
+            sheet.write(int(head_ind+1), 5, float(pca.explained_variance_ratio_[1]))
+            sheet.write(int(head_ind+1), 6, float(pca.singular_values_[0]))
+            sheet.write(int(head_ind+1), 7, float(pca.singular_values_[1]))
+            sheet.write(int(head_ind+1), 8, float(pca.noise_variance_))
 
         data = np.concatenate(data)
         labels = np.repeat(labels, label_size)

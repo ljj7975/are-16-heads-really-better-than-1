@@ -30,7 +30,6 @@ do
         printf "\t diff - %.5f\n" $(echo "$acc - $base_acc" | bc)
 
         echo "$acc" >> $LOG_FILE
-        echo "$acc - $base_acc" | bc >> $LOG_FILE
     done
 done
 
