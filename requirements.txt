@@ -11,3 +11,4 @@ pandas
 MulticoreTSNE
 nltk
 matplotlib
+sklearn

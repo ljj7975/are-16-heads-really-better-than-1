@@ -48,8 +48,11 @@ def main():
         sheet.write(0, 7, 'singular_values_2')
         sheet.write(0, 8, 'noise_variance_')
 
+        sheet.write(0, 10, 'variance_1')
+        sheet.write(0, 11, 'variance_2')
+
         data = []
-        labels = np.arange(0, num_heads)
+        labels = np.arange(num_heads)
 
         label_size = []
 
@@ -84,12 +87,22 @@ def main():
         data = np.concatenate(data)
         labels = np.repeat(labels, label_size)
 
+        # variance calculation
+        data_2d = PCA(n_components=2).fit_transform(data)
+        
+        for head_label in np.arange(num_heads):
+            ix = np.where(labels == head_label)
+
+            sheet.write(int(head_label+1), 10, float(np.var(data_2d[:, 0][ix])))
+            sheet.write(int(head_label+1), 11, float(np.var(data_2d[:, 1][ix])))
+
+        # scatter plot
         if args.method == 'pca':
-            data = PCA(n_components=2).fit_transform(data)
+            data_2d = PCA(n_components=2).fit_transform(data)
         elif args.method == 'tsne':
-            data = TSNE(n_jobs=24, verbose=True).fit_transform(data)
+            data_2d = TSNE(n_jobs=24, verbose=True).fit_transform(data)
         elif args.method == 'lda':
-            data = LDA(n_components=2).fit_transform(data, labels)
+            data_2d = LDA(n_components=2).fit_transform(data, labels)
 
         # plot distribution
 
@@ -115,9 +128,9 @@ def main():
             11 :'pink'
         }
 
-        for head_label in np.arange(0, num_heads):
+        for head_label in np.arange(num_heads):
             ix = np.where(labels == head_label)
-            scatter = ax.scatter(data[:,0][ix], data[:,1][ix], c=color_dict[head_label], label=head_label, s=1)
+            scatter = ax.scatter(data_2d[:, 0][ix], data_2d[:, 1][ix], c=color_dict[head_label], label=head_label, s=1)
 
         lgd = ax.legend(loc='upper center', bbox_to_anchor=(0.5, -0.10), title="Heads", ncol=int(num_heads/2), prop={'size': 10})
         for handle in lgd.legendHandles:

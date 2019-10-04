@@ -2,7 +2,11 @@
 
 TASK=$1
 OPTIONS="${@:2}"
+
 LOG_FILE="models/${TASK}/ablation_results.txt"
+if [[ $OPTIONS == *"--reverse_head_mask"* ]]; then
+    LOG_FILE="models/${TASK}/reverse_ablation_results.txt"
+fi
 echo "log file : $LOG_FILE"
 echo "task : $TASK"
 echo "options : $OPTIONS"
