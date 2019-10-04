@@ -61,9 +61,9 @@ metric="eval_accuracy"
 if [ $TASK == "MRPC" ]
 then
     metric="F-1"
-# elif [ $TASK == "CoLA" ]
-# then
-#     metric="Matthew"
+elif [ $TASK == "CoLA" ]
+then
+    metric="Matthew"
 fi
 
 run_eval
