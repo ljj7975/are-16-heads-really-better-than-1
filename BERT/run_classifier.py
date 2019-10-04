@@ -267,6 +267,7 @@ def main():
     to_prune = pruning.parse_head_pruning_descriptors(
         args.attention_mask_heads,
         reverse_descriptors=args.reverse_head_mask,
+        n_heads=12
     )
     # Mask heads
     if args.actually_prune:
@@ -359,6 +360,7 @@ def main():
     to_prune = pruning.parse_head_pruning_descriptors(
         args.attention_mask_heads,
         reverse_descriptors=args.reverse_head_mask,
+        n_heads=12
     )
     # Mask heads
     if args.actually_prune:
