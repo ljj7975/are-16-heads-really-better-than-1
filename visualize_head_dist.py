@@ -30,7 +30,7 @@ def main():
     # prepare output dir
 
     output_dir = os.path.join(args.output_folder_name, args.task)
-    if not os.path.exists(args.output_folder_name):
+    if not os.path.exists(output_dir):
         os.makedirs(output_dir)
     input_dir = os.path.join(args.input_folder_name, args.task)
 
