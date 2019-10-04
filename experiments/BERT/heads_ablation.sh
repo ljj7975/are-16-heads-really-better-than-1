@@ -1,9 +1,5 @@
 #!/usr/bin/env bash
 
-# keep newline when we get output from a command
-# https://unix.stackexchange.com/questions/164508/why-do-newline-characters-get-lost-when-using-command-substitution
-IFS=
-
 TASK=$1
 OPTIONS="${@:2}"
 LOG_FILE="models/${TASK}/ablation_results.txt"
@@ -30,12 +26,12 @@ do
     for head in `seq 1 12`
     do
         mask_str="${layer}:${head}"
-        echo "$mask_str $OPTIONS"
+        echo -e "\t$mask_str $OPTIONS"
 
         start_time=$(date +%s.%N)
         acc=$(run_eval "--attention_mask_heads $mask_str $OPTIONS" | grep $metric | rev | cut -d" " -f1 | rev)
         end_time=$(date +%s.%N)
-        echo "\ttime elapsed - " $(echo "$end_time - $start_time" | bc)
+        echo -e "\ttime elapsed - " $(echo "$end_time - $start_time" | bc)
 
         echo -en "\tacc - $acc"
         printf "\t diff - %.5f\n" $(echo "$acc - $base_acc" | bc)
