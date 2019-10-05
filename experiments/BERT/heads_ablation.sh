@@ -31,7 +31,7 @@ do
     echo "layer - $layer"
     for head_1 in `seq 1 12`
     do
-        for head_2 in `seq 1 12`
+        for head_2 in `seq $head_1 12`
         do
 
             if [ "${head_1}" == "${head_2}" ]; then
