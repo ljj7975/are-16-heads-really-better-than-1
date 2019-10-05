@@ -31,15 +31,14 @@ do
     echo "layer - $layer"
     for head_1 in `seq 1 12`
     do
-        mask_str="${layer}:${head_1},"
         for head_2 in `seq 1 12`
         do
 
             if [ "${head_1}" == "${head_2}" ]; then
                 continue
             fi
-
-            mask_str+="${head_2}"
+            
+            mask_str="${layer}:${head_1},${head_2}"
             echo -e "\t$mask_str $OPTIONS"
 
             start_time=$(date +%s.%N)
