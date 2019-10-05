@@ -37,13 +37,13 @@ do
             if [ "${head_1}" == "${head_2}" ]; then
                 continue
             fi
-            
+
             mask_str="${layer}:${head_1},${head_2}"
             echo -e "\t$mask_str $OPTIONS"
 
             start_time=$(date +%s.%N)
 
-            acc=$(run_eval "--attention_mask_heads $mask_str_1 $mask_str_2 $OPTIONS" | grep $metric | rev | cut -d" " -f1 | rev)
+            acc=$(run_eval "--attention_mask_heads $mask_str $OPTIONS" | grep $metric | rev | cut -d" " -f1 | rev)
             end_time=$(date +%s.%N)
             echo -e "\ttime elapsed - " $(echo "$end_time - $start_time" | bc)
 
