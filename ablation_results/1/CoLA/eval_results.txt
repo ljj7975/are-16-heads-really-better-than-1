@@ -1,0 +1,6 @@
+Matthew's correlation = 0.5913717452795544
+eval_accuracy = 0.8322147651006712
+eval_loss = 0.4666124689215012
+global_step = 0
+inference_time = 12.571253776550293
+loss = None
