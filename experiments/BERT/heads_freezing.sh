@@ -23,11 +23,9 @@ echo "model dir : $model_dir"
 
 function run_train () {
     # $1 = output dir
-    # $3 = args
+    # $2 = args
 
-    output_dir=$1
-
-    mkdir -p $output_dir
+    mkdir -p $1
 
     python BERT/run_classifier.py \
     --task_name $TASK \
@@ -36,11 +34,11 @@ function run_train () {
     --data_dir $DATA_DIR/glue/$TASK/ \
     --bert_model bert-base-uncased \
     --max_seq_length 128 \
-    --train_batch_size 8 \
-    --eval_batch_size 8 \
+    --train_batch_size 16 \
+    --eval_batch_size 16 \
     --learning_rate 2e-5 \
     --num_train_epochs 3.0 \
-    --output_dir $output_dir \
+    --output_dir $1 \
     $2 2>&1
 }
 
@@ -54,7 +52,7 @@ function run_eval () {
     --data_dir $DATA_DIR/glue/$TASK/ \
     --bert_model bert-base-uncased \
     --max_seq_length 128 \
-    --eval_batch_size 8 \
+    --eval_batch_size 16 \
     --output_dir $1 2>&1
 }
 
@@ -85,6 +83,8 @@ echo $base_acc >> $LOG_FILE
 # freezing layers
 for layer in `seq 1 12`
 do
+    mask_str=""
+
     if [ "$REVERSE" = true ] ; then
         for layer_to_freeze in `seq 1 12`
         do
