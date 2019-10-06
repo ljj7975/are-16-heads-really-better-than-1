@@ -169,6 +169,11 @@ def training_args(parser):
         help="Number of updates steps to accumulate before "
         "performing a backward/update pass."
     )
+    train_group.add_argument(
+        '--freeze_param',
+        default="", type=str, nargs="*",
+        help="[substring of targer param name] [substring of targer param name] ..."
+    )
 
 
 def pruning_args(parser):

@@ -281,6 +281,13 @@ def main():
     # Trainable parameters
     if args.do_train or args.do_prune:
         param_optimizer = list(model.named_parameters())
+
+        logger.info(f"Freezing params with : {args.freeze_param}")
+
+        if len(args.freeze_param) > 0:
+            for substr in args.freeze_param:
+                param_optimizer = [(n, p) for n, p in param_optimizer if substr not in n]
+
         no_decay = ['bias', 'LayerNorm.bias', 'LayerNorm.weight']
         # Only train the classifier in feature mode
         if args.feature_mode:
@@ -344,7 +351,10 @@ def main():
         torch.save(model_to_save.state_dict(), output_model_file)
 
     # Load a trained model that you have fine-tuned
-    model_state_dict = torch.load(output_model_file)
+    if torch.cuda.is_available():
+        model_state_dict = torch.load(output_model_file)
+    else:
+        model_state_dict = torch.load(output_model_file, map_location='cpu')
     model = get_model(
         args.bert_model,
         toy_classifier=args.toy_classifier,
