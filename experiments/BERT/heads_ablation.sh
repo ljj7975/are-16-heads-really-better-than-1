@@ -39,7 +39,7 @@ do
     echo -en "\tacc - $acc"
     printf "\t diff - %.5f\n" $(echo "$acc - $base_acc" | bc)
 
-    echo "$layer\t$mask_str\t$acc" >> $LOG_FILE
+    echo -e "$layer\t$mask_str\t$acc" >> $LOG_FILE
 done
 
 exp_end_time=$(date +%s.%N)
