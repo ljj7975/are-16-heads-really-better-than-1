@@ -71,7 +71,7 @@ exp_start_time=$(date +%s.%N)
 
 if [ ! -e $model_dir/pytorch_model.bin ]
 then
-    $(run_train $model_dir)
+    result=$(run_train $model_dir)
 else
     echo "trained model exist"
 fi
@@ -111,7 +111,7 @@ do
 
     if [ ! -e $store_at/pytorch_model.bin ]
     then
-        $(run_train $store_at "--freeze_param $mask_str")
+        result=$(run_train $store_at "--freeze_param $mask_str")
     else
         echo "trained model exist"
     fi
