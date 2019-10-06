@@ -3,27 +3,33 @@
 TASK=$1
 OPTIONS="${@:2}"
 
-LOG_FILE="models/${TASK}/freezing_results.txt"
+
+model_dir=models/$TASK/base
 if [[ $OPTIONS == *"--reverse_freezing"* ]]; then
-    LOG_FILE="models/${TASK}/reverse_freezing_results.txt"
+    REVERSE=true
+    model_dir=models/$TASK/reverse
+elif [[ $OPTIONS == *"--incremental_freezing"* ]]; then
+    INCREMENTAL=true
+    model_dir=models/$TASK/incremental
 fi
+
+LOG_FILE="$model_dir/freezing_results.txt"
 echo "log file : $LOG_FILE"
 echo "task : $TASK"
 echo "options : $OPTIONS"
 echo "data dir : $DATA_DIR"
+mkdir -p $model_dir
+echo "model dir : $model_dir"
 
 function run_train () {
+    # $1 = output dir
+    # $3 = args
 
-    if [ $# -eq 0 ]
-    then
-        model_dir=models/$TASK
-    else
-        model_dir=models/$TASK/$1
-    fi
+    output_dir=$1
 
-    mkdir -p $model_dir
+    mkdir -p $output_dir
 
-    TRAIN_CMD="python BERT/run_classifier.py \
+    python BERT/run_classifier.py \
     --task_name $TASK \
     --do_train \
     --do_lower_case \
@@ -34,31 +40,14 @@ function run_train () {
     --eval_batch_size 8 \
     --learning_rate 2e-5 \
     --num_train_epochs 3.0 \
-    --output_dir $model_dir"
-
-    if [ $# -eq 1 ]
-    then
-        TRAIN_CMD+=" \
-        --freeze_param $1"
-    elif [ $# -eq 2 ]
-    then
-        TRAIN_CMD+=" \
-        $2"
-    fi
-
-    $(TRAIN_CMD 2>&1)
+    --output_dir $output_dir \
+    $2 2>&1
 }
 
 function run_eval () {
+    # $1 = output dir
 
-    if [ $# -eq 0 ]
-    then
-        model_dir=models/$TASK
-    else
-        model_dir=models/$TASK/$1
-    fi
-
-    EVAL_CMD="python BERT/run_classifier.py \
+    python BERT/run_classifier.py \
     --task_name $TASK \
     --do_eval \
     --do_lower_case \
@@ -66,9 +55,7 @@ function run_eval () {
     --bert_model bert-base-uncased \
     --max_seq_length 128 \
     --eval_batch_size 8 \
-    --output_dir $model_dir"
-
-    $(EVAL_CMD 2>&1)
+    --output_dir $1 2>&1
 }
 
 metric="eval_accuracy"
@@ -86,32 +73,58 @@ exp_start_time=$(date +%s.%N)
 
 if [ ! -e $model_dir/pytorch_model.bin ]
 then
-    run_train
+    $(run_train $model_dir)
 else
     echo "trained model exist"
 fi
 
-base_acc=$(run_eval | grep $metric | rev | cut -d" " -f1 | rev)
-echo "base_acc $base_acc"
+base_acc=$(run_eval $model_dir | grep $metric | rev | cut -d" " -f1 | rev)
+echo "base_acc : $base_acc"
 echo $base_acc >> $LOG_FILE
 
 # freezing layers
 for layer in `seq 1 12`
 do
-
-    mask_str="layer.$layer.attention.self"
+    if [ "$REVERSE" = true ] ; then
+        for layer_to_freeze in `seq 1 12`
+        do
+            if [ "${layer}" == "${layer_to_freeze}" ]; then
+                continue
+            fi
+            mask_str+="layer.${layer_to_freeze}.attention.self "
+        done
+    elif [ "$INCREMENTAL" = true ] ; then
+        for layer_to_freeze in `seq ${layer} 12`
+        do
+            mask_str+="layer.${layer_to_freeze}.attention.self "
+        done
+    else
+        mask_str="layer.${layer}.attention.self"
+    fi
+    
     echo $mask_str
 
+    store_at=$model_dir/$layer/
+    mkdir -p store_at
+
     start_time=$(date +%s.%N)
-    $(run_train $mask_str $OPTIONS)
-    acc=$(run_eval $mask_str | grep $metric | rev | cut -d" " -f1 | rev)
+
+    if [ ! -e $store_at/pytorch_model.bin ]
+    then
+        $(run_train $store_at "--freeze_param $mask_str")
+    else
+        echo "trained model exist"
+    fi
+
+
+    acc=$(run_eval $store_at | grep $metric | rev | cut -d" " -f1 | rev)
     end_time=$(date +%s.%N)
-    echo -e "\ttime elapsed - " $(echo "$end_time - $start_time" | bc)
+    echo -e "\t time elapsed - " $(echo "$end_time - $start_time" | bc)
 
-    echo -en "\tacc - $acc"
-    printf "\tdiff - %.5f\n" $(echo "$acc : $base_acc" | bc)
+    echo -e "\t acc - $acc"
+    printf "\t diff - %.5f\n" $(echo "$acc - $base_acc" | bc)
 
-    echo -e "$mask_str\t$acc" >> $LOG_FILE
+    echo -e "$layer\t$mask_str\t$acc" >> $LOG_FILE
 done
 
 exp_end_time=$(date +%s.%N)
