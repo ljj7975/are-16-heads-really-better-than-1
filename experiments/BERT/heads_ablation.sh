@@ -27,21 +27,19 @@ exp_start_time=$(date +%s.%N)
 for layer in `seq 1 12`
 do
     echo "layer - $layer"
-    for head in `seq 1 12`
-    do
-        mask_str="${layer}:${head}"
-        echo -e "\t$mask_str $OPTIONS"
+    mask_str="${layer}:1,2,3,4,5,6,7,8,9,10,11,12"
 
-        start_time=$(date +%s.%N)
-        acc=$(run_eval "--attention_mask_heads $mask_str $OPTIONS" | grep $metric | rev | cut -d" " -f1 | rev)
-        end_time=$(date +%s.%N)
-        echo -e "\ttime elapsed - " $(echo "$end_time - $start_time" | bc)
+    echo -e "\t$mask_str $OPTIONS"
 
-        echo -en "\tacc - $acc"
-        printf "\t diff - %.5f\n" $(echo "$acc - $base_acc" | bc)
+    start_time=$(date +%s.%N)
+    acc=$(run_eval "--attention_mask_heads $mask_str $OPTIONS" | grep $metric | rev | cut -d" " -f1 | rev)
+    end_time=$(date +%s.%N)
+    echo -e "\ttime elapsed - " $(echo "$end_time - $start_time" | bc)
 
-        echo "$acc" >> $LOG_FILE
-    done
+    echo -en "\tacc - $acc"
+    printf "\t diff - %.5f\n" $(echo "$acc - $base_acc" | bc)
+
+    echo "$layer\t$mask_str\t$acc" >> $LOG_FILE
 done
 
 exp_end_time=$(date +%s.%N)
