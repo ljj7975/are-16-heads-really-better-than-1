@@ -6,8 +6,8 @@
 
 source ~/ENV/bin/activate
 
-TASK='MRCP'
-SCRIPT='freeze_all.sh'
+TASK='MRPC'
+SCRIPT='output_dense_freezing.sh'
 
 
 CUDA_VISIBLE_DEVICES=0 bash experiments/BERT/$SCRIPT $TASK &

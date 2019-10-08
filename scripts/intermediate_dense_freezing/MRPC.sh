@@ -6,7 +6,7 @@
 
 source ~/ENV/bin/activate
 
-TASK='MRCP'
+TASK='MRPC'
 SCRIPT='intermediate_dense_freezing.sh'
 
 

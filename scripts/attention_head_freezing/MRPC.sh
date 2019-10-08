@@ -6,7 +6,7 @@
 
 source ~/ENV/bin/activate
 
-TASK='MRCP'
+TASK='MRPC'
 
 CUDA_VISIBLE_DEVICES=0 bash experiments/BERT/heads_freezing.sh $TASK &
 sleep 1m
