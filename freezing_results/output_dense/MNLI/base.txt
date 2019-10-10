@@ -1,6 +1,0 @@
-0.8380030565461029
-1	bert.encoder.layer.1.output.dense	0.8371879775853286
-2	bert.encoder.layer.2.output.dense	0.8385124808965868
-3	bert.encoder.layer.3.output.dense	0.8388181355068772
-4	bert.encoder.layer.4.output.dense	0.8342333163525216
-5	bert.encoder.layer.5.output.dense	0.8375955170657158

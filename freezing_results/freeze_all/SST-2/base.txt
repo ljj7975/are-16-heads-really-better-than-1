@@ -1,4 +1,0 @@
-0.926605504587156
-1	1.attention.self 1.attention.output.dense 1.intermediate.dense 1.output.dense. 	0.926605504587156
-2	2.attention.self 2.attention.output.dense 2.intermediate.dense 2.output.dense. 	0.9277522935779816
-3	3.attention.self 3.attention.output.dense 3.intermediate.dense 3.output.dense. 	0.9288990825688074

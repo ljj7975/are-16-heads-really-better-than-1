@@ -1,6 +1,0 @@
-0.8380030565461029
-1	bert.encoder.layer.1.intermediate.dense	0.8359653591441671
-2	bert.encoder.layer.2.intermediate.dense	0.8380030565461029
-3	bert.encoder.layer.3.intermediate.dense	0.8360672440142639
-4	bert.encoder.layer.4.intermediate.dense	0.8382068262862965
-5	bert.encoder.layer.5.intermediate.dense	0.8381049414161997
