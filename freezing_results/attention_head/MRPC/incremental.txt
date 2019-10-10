@@ -1,0 +1,13 @@
+0.9078260869565218
+1	layer.1.attention.self layer.2.attention.self layer.3.attention.self layer.4.attention.self layer.5.attention.self layer.6.attention.self layer.7.attention.self layer.8.attention.self layer.9.attention.self layer.10.attention.self layer.11.attention.self layer.12.attention.self 	0.9109947643979057
+2	layer.2.attention.self layer.3.attention.self layer.4.attention.self layer.5.attention.self layer.6.attention.self layer.7.attention.self layer.8.attention.self layer.9.attention.self layer.10.attention.self layer.11.attention.self layer.12.attention.self 	0.900523560209424
+3	layer.3.attention.self layer.4.attention.self layer.5.attention.self layer.6.attention.self layer.7.attention.self layer.8.attention.self layer.9.attention.self layer.10.attention.self layer.11.attention.self layer.12.attention.self 	0.9094076655052264
+4	layer.4.attention.self layer.5.attention.self layer.6.attention.self layer.7.attention.self layer.8.attention.self layer.9.attention.self layer.10.attention.self layer.11.attention.self layer.12.attention.self 	0.9106529209621993
+5	layer.5.attention.self layer.6.attention.self layer.7.attention.self layer.8.attention.self layer.9.attention.self layer.10.attention.self layer.11.attention.self layer.12.attention.self 	0.9103448275862069
+6	layer.6.attention.self layer.7.attention.self layer.8.attention.self layer.9.attention.self layer.10.attention.self layer.11.attention.self layer.12.attention.self 	0.8999999999999999
+7	layer.7.attention.self layer.8.attention.self layer.9.attention.self layer.10.attention.self layer.11.attention.self layer.12.attention.self 	0.9003436426116839
+8	layer.8.attention.self layer.9.attention.self layer.10.attention.self layer.11.attention.self layer.12.attention.self 	0.9025641025641027
+9	layer.9.attention.self layer.10.attention.self layer.11.attention.self layer.12.attention.self 	0.9125874125874125
+10	layer.10.attention.self layer.11.attention.self layer.12.attention.self 	0.9087779690189328
+11	layer.11.attention.self layer.12.attention.self 	0.8999999999999999
+12	layer.12.attention.self 	0.9078260869565218

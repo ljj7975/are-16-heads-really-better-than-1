@@ -1,0 +1,13 @@
+0.9078260869565218
+1	bert.encoder.layer.1.intermediate.dense	0.9100346020761245
+2	bert.encoder.layer.2.intermediate.dense	0.9027777777777778
+3	bert.encoder.layer.3.intermediate.dense	0.9072164948453608
+4	bert.encoder.layer.4.intermediate.dense	0.925476603119584
+5	bert.encoder.layer.5.intermediate.dense	0.9097222222222222
+6	bert.encoder.layer.6.intermediate.dense	0.8998302207130731
+7	bert.encoder.layer.7.intermediate.dense	0.9050086355785838
+8	bert.encoder.layer.8.intermediate.dense	0.905982905982906
+9	bert.encoder.layer.9.intermediate.dense	0.90625
+10	bert.encoder.layer.10.intermediate.dense	0.9012131715771231
+11	bert.encoder.layer.11.intermediate.dense	0.9053356282271946
+12	bert.encoder.layer.12.intermediate.dense	0.9078260869565218
