@@ -1,0 +1,13 @@
+0.5630491915710935
+1	layer.1.attention.self	0.5480080758935534
+2	layer.2.attention.self	0.5778590180299453
+3	layer.3.attention.self	0.5580354863452468
+4	layer.4.attention.self	0.5573424050983508
+5	layer.5.attention.self	0.5676052483913692
+6	layer.6.attention.self	0.5653604748370356
+7	layer.7.attention.self	0.5523181756655187
+8	layer.8.attention.self	0.5651604238862242
+9	layer.9.attention.self	0.5703054933279827
+10	layer.10.attention.self	0.5755298089385917
+11	layer.11.attention.self	0.5905484639384344
+12	layer.12.attention.self	0.5650322558145829
