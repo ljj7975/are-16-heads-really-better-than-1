@@ -28,7 +28,7 @@ function run_train () {
     --do_train \
     --do_lower_case \
     --data_dir $DATA_DIR/glue/$TASK/ \
-    --bert_model bert-base-uncased \
+    --bert_model $TRAINED_MODEL_DIR/bert-base-uncased \
     --max_seq_length 128 \
     --train_batch_size 8 \
     --eval_batch_size 8 \
@@ -44,7 +44,7 @@ function run_eval () {
     --do_lower_case \
     $1 \
     --data_dir $DATA_DIR/glue/$TASK/ \
-    --bert_model bert-base-uncased \
+    --bert_model $TRAINED_MODEL_DIR/bert-base-uncased \
     --max_seq_length 128 \
     --eval_batch_size 8 \
     --output_dir $model_dir 2>&1
