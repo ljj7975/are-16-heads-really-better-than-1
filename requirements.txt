@@ -12,3 +12,4 @@ MulticoreTSNE
 nltk
 matplotlib
 sklearn
+prettytable
