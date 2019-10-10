@@ -1,0 +1,6 @@
+Accuracy = 0.8247580234335201
+eval_accuracy = 0.8247580234335201
+eval_loss = 0.6943789671532682
+global_step = 0
+inference_time = 116.75088167190552
+loss = None
