@@ -11,6 +11,9 @@ if [[ $OPTIONS == *"--reverse_freezing"* ]]; then
 elif [[ $OPTIONS == *"--incremental_freezing"* ]]; then
     INCREMENTAL=true
     model_dir=attention_head/$TASK/incremental
+elif [[ $OPTIONS == *"--reverse_incremental_freezing"* ]]; then
+    REVERSE_INCREMENTAL=true
+    model_dir=attention_head/$TASK/reverse_incremental
 fi
 
 LOG_FILE="$model_dir/freezing_results.txt"
@@ -95,6 +98,11 @@ do
         done
     elif [ "$INCREMENTAL" = true ] ; then
         for layer_to_freeze in `seq ${layer} 12`
+        do
+            mask_str+="layer.${layer_to_freeze}.attention.self "
+        done
+    elif [ "$REVERSE_INCREMENTAL" = true ] ; then
+        for layer_to_freeze in `seq 1 ${layer}`
         do
             mask_str+="layer.${layer_to_freeze}.attention.self "
         done

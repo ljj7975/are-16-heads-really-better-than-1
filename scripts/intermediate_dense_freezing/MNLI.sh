@@ -1,8 +1,8 @@
 #!/bin/bash
 #SBATCH --time=4-00:00:00
-#SBATCH --gres=gpu:3
+#SBATCH --gres=gpu:4
 #SBATCH --cpus-per-task=8
-#SBATCH --mem=30G
+#SBATCH --mem=40G
 
 source ~/ENV/bin/activate
 
@@ -17,6 +17,9 @@ CUDA_VISIBLE_DEVICES=1 bash experiments/BERT/$SCRIPT $TASK --reverse_freezing &
 sleep 1m
 
 CUDA_VISIBLE_DEVICES=2 bash experiments/BERT/$SCRIPT $TASK --incremental_freezing &
+sleep 1m
+
+CUDA_VISIBLE_DEVICES=3 bash experiments/BERT/$SCRIPT $TASK --reverse_incremental_freezing &
 
 wait
 
