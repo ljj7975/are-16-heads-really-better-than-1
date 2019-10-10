@@ -4,13 +4,13 @@ TASK=$1
 OPTIONS="${@:2}"
 
 
-model_dir=models/$TASK/base
+model_dir=attention_head/$TASK/base
 if [[ $OPTIONS == *"--reverse_freezing"* ]]; then
     REVERSE=true
-    model_dir=models/$TASK/reverse
+    model_dir=attention_head/$TASK/reverse
 elif [[ $OPTIONS == *"--incremental_freezing"* ]]; then
     INCREMENTAL=true
-    model_dir=models/$TASK/incremental
+    model_dir=attention_head/$TASK/incremental
 fi
 
 LOG_FILE="$model_dir/freezing_results.txt"
@@ -32,7 +32,7 @@ function run_train () {
     --do_train \
     --do_lower_case \
     --data_dir $DATA_DIR/glue/$TASK/ \
-    --bert_model bert-base-uncased \
+    --bert_model $TRAINED_MODEL_DIR/bert-base-uncased \
     --max_seq_length 128 \
     --train_batch_size 16 \
     --eval_batch_size 16 \
@@ -50,7 +50,7 @@ function run_eval () {
     --do_eval \
     --do_lower_case \
     --data_dir $DATA_DIR/glue/$TASK/ \
-    --bert_model bert-base-uncased \
+    --bert_model $TRAINED_MODEL_DIR/bert-base-uncased \
     --max_seq_length 128 \
     --eval_batch_size 16 \
     --output_dir $1 2>&1

@@ -6,14 +6,17 @@
 
 source ~/ENV/bin/activate
 
-CUDA_VISIBLE_DEVICES=0 bash experiments/BERT/heads_freezing.sh CoLA &
+TASK='CoLA'
+SCRIPT='attention_head_freezing.sh'
+
+
+CUDA_VISIBLE_DEVICES=0 bash experiments/BERT/$SCRIPT $TASK &
 sleep 1m
 
-CUDA_VISIBLE_DEVICES=1 bash experiments/BERT/heads_freezing.sh CoLA --reverse_freezing &
+CUDA_VISIBLE_DEVICES=1 bash experiments/BERT/$SCRIPT $TASK --reverse_freezing &
 sleep 1m
 
-CUDA_VISIBLE_DEVICES=2 bash experiments/BERT/heads_freezing.sh CoLA --incremental_freezing &
-
+CUDA_VISIBLE_DEVICES=2 bash experiments/BERT/$SCRIPT $TASK --incremental_freezing &
 
 wait
 

@@ -7,15 +7,16 @@
 source ~/ENV/bin/activate
 
 TASK='MRPC'
+SCRIPT='attention_head_freezing.sh'
 
-CUDA_VISIBLE_DEVICES=0 bash experiments/BERT/heads_freezing.sh $TASK &
+
+CUDA_VISIBLE_DEVICES=0 bash experiments/BERT/$SCRIPT $TASK &
 sleep 1m
 
-CUDA_VISIBLE_DEVICES=1 bash experiments/BERT/heads_freezing.sh $TASK --reverse_freezing &
+CUDA_VISIBLE_DEVICES=1 bash experiments/BERT/$SCRIPT $TASK --reverse_freezing &
 sleep 1m
 
-CUDA_VISIBLE_DEVICES=2 bash experiments/BERT/heads_freezing.sh $TASK --incremental_freezing &
-
+CUDA_VISIBLE_DEVICES=2 bash experiments/BERT/$SCRIPT $TASK --incremental_freezing &
 
 wait
 

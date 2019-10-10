@@ -6,16 +6,17 @@
 
 source ~/ENV/bin/activate
 
+TASK='SST-2'
+SCRIPT='attention_head_freezing.sh'
 
 
-CUDA_VISIBLE_DEVICES=0 bash experiments/BERT/heads_freezing.sh SST-2 &
+CUDA_VISIBLE_DEVICES=0 bash experiments/BERT/$SCRIPT $TASK &
 sleep 1m
 
-CUDA_VISIBLE_DEVICES=1 bash experiments/BERT/heads_freezing.sh SST-2 --reverse_freezing &
+CUDA_VISIBLE_DEVICES=1 bash experiments/BERT/$SCRIPT $TASK --reverse_freezing &
 sleep 1m
 
-CUDA_VISIBLE_DEVICES=2 bash experiments/BERT/heads_freezing.sh SST-2 --incremental_freezing &
-
+CUDA_VISIBLE_DEVICES=2 bash experiments/BERT/$SCRIPT $TASK --incremental_freezing &
 
 wait
 
