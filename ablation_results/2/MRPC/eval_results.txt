@@ -1,0 +1,6 @@
+F-1 score = 0.899488926746167
+eval_accuracy = 0.8553921568627451
+eval_loss = 0.3844660672486997
+global_step = 0
+inference_time = 4.256605386734009
+loss = None
